@@ -16,7 +16,7 @@ jobs:
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.0' # Specify your PHP version
+        php-version: '8.2' # Specify your PHP version
 
     - name: Install Composer dependencies
       run: composer install --no-dev --optimize-autoloader
@@ -29,4 +29,7 @@ jobs:
         password: ${{ secrets.SFTP_PASS }}
         local-dir: ./
         server-dir: ./
+        command_timeout: 600
         timeout: 600 
+        retries: 3
+        retry-delay: 10
