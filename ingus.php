@@ -19,17 +19,16 @@ if ( empty( $bot->data['updates'] ) ) {
 foreach ( $bot->data['updates'] as $update ) {
 	$update_id = $update->getUpdateId();
 	if ( $cache->get( NG_ING_PREFIX . '_update_' . $update_id ) ) {
-		echo '... skipping update ' . $update_id . PHP_EOL;
 		continue;
 	}
 	$guard = new \Ng\Ingus\Controller\Guard( $update );
 	if ( defined( 'NGINS_COPY_ALL' ) && NGINS_COPY_ALL ) {
-		$bot->send_message( NGINS_ADMIN_CHAT, 'Update: ' .  $update->getMessage()->getText()  );
+		$bot->send_message( NGINS_ADMIN_CHAT, 'Update: ' . $update->getMessage()->getText() . ' from ' . $update->getMessage()->getChat()->getId() );
 
 	}
 	if ( $guard->is_spam( $update ) ) {
 		// $bot->delete_message( $update->getMessage()->getChat()->getId(), $update->getMessage()->getMessageId() );
 		$bot->send_message( NGINS_ADMIN_CHAT, 'Spam detected: ' . $update->getMessage()->getText() );
 	}
-	$cache->set( NG_ING_PREFIX . '_update_' . $update_id, $update_id, 24*60*60 );
+	$cache->set( NG_ING_PREFIX . '_update_' . $update_id, $update_id, 24 * 60 * 60 );
 }

@@ -29,4 +29,4 @@ jobs:
         password: ${{ secrets.SFTP_PASS }}
         local-dir: ./
         server-dir: ./
-        command_timeout: 600 
+        timeout: 600 
