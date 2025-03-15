@@ -23,7 +23,7 @@ foreach ( $bot->data['updates'] as $update ) {
 	}
 	$guard = new \Ng\Ingus\Controller\Guard( $update );
 	if ( defined( 'NGINS_COPY_ALL' ) && NGINS_COPY_ALL ) {
-		$bot->send_message( NGINS_ADMIN_CHAT, 'Update: ' . $update->getMessage()->getText() . ' from ' . $update->getMessage()->getChat()->getId() );
+		$bot->send_message( NGINS_ADMIN_CHAT, 'Update: ' . $update->getMessage()->getText() . ' from ' . $update->getMessage()->getChat()->getId().' chat name:'.$update->getMessage()->getChat()->getTitle() );
 
 	}
 	if ( $guard->is_spam( $update ) ) {
