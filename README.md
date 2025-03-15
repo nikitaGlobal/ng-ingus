@@ -12,7 +12,7 @@ Ingus is named after the famous Russian border dog. This is a simple bot for Tel
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/ingus.git
+    git clone https://github.com/nikitaglobal/ng-ingus.git
     ```
 2. Navigate to the project directory:
     ```bash
