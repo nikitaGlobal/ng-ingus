@@ -1,0 +1,20 @@
+{
+    "name": "nikitaglobal/ingus",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Ng\\Ingus\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nikita Menshutin",
+            "email": "info@nikita.global"
+        }
+    ],
+    "require": {
+        "telegram-bot/api": "^2.5",
+        "phpfastcache/phpfastcache": "^9.2"
+    }
+}
