@@ -6,8 +6,8 @@ require_once 'vendor/autoload.php';
 date_default_timezone_set( 'Europe/Moscow' );
 define( 'NG_ING_PREFIX', 'NGING' );
 define( 'NG_ING_VERSION', '0.1.0' );
-define( 'NGING_LOGFILE', __DIR__ . '/logs/ingus' . date( 'Ymd' ) . '.log' );
-$rules = json_decode(file_get_contents( __DIR__ . '/rules.json' ), true);
+define( 'NG_ING_FOLDER', __DIR__ );
+$rules = json_decode( file_get_contents( __DIR__ . '/rules.json' ), true );
 if ( ! $rules || ! is_array( $rules ) ) {
 	throw new Exception( 'Invalid rules.json' );
 }
@@ -16,10 +16,11 @@ require_once 'config.php';
 $bot = new \Ng\Ingus\Controller\Bot();
 $bot->get_updates( array() );
 $bot->filter_updates( NGINS_CHATTS );
-$cache = new \Ng\Ingus\Controller\Cache();
+$cache = new \Ng\Ingus\Controller\Cache( 'cache.json' );
 if ( empty( $bot->data['updates'] ) ) {
 	exit;
 }
+shuffle( $bot->data['updates'] );
 foreach ( $bot->data['updates'] as $update ) {
 	$update_id = $update->getUpdateId();
 	if ( $cache->get( NG_ING_PREFIX . '_update_' . $update_id ) ) {

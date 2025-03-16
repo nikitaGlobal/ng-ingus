@@ -1,26 +1,46 @@
 <?php
+declare( strict_types = 1 );
 namespace Ng\Ingus\Controller;
-
-use Phpfastcache\Helper\Psr16Adapter as CacheAdapter;
 
 class Cache {
 
 	/**
 	 * Cache adapter.
 	 *
-	 * @var
+	 * @var array
 	 */
-	private $cache;
+	private array $cache;
+	/**
+	 * Cache file.
+	 *
+	 * @var string
+	 */
+	private string $cache_file;
 
-	function __construct() {
-		$this->cache = new CacheAdapter( 'Files' );
+	function __construct( string $file ) {
+		$this->cache_file = $file;
+		if ( ! file_exists( $this->cache_file ) ) {
+			file_put_contents( $this->cache_file, json_encode( array() ) );
+		}
+		$this->cache = json_decode( file_get_contents( $this->cache_file ), true );
 	}
-	public function set( $key, $value, $ttl ) {
-		$this->cache->set( $key, $value, $ttl );
-
+	public function set( string $key, $value, int $ttl ) {
+		$this->cache[ $key ] = array(
+			'value' => $value,
+			'ttl'   => time() + $ttl,
+		);
+		file_put_contents( $this->cache_file, json_encode( $this->cache ) );
 		return $value;
 	}
-	public function get( $key ) {
-		return $this->cache->get( $key );
+	public function get( string $key ) {
+		if ( ! isset( $this->cache[ $key ] ) ) {
+			return false;
+		}
+		if ( $this->cache[ $key ]['ttl'] < time() ) {
+			unset( $this->cache[ $key ] );
+			file_put_contents( $this->cache_file, json_encode( $this->cache ) );
+			return false;
+		}
+		return $this->cache[ $key ]['value'];
 	}
 }

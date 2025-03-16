@@ -41,7 +41,6 @@ class Bot {
 	}
 
 	public function delete_message( $chat_id, $message_id ): self {
-		// check if message exists
 		try {
 			$this->bot->deleteMessage( $chat_id, $message_id );
 		} catch ( Exception $e ) {
