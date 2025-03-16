@@ -22,7 +22,7 @@ class Cache {
 		if ( ! file_exists( $this->cache_file ) ) {
 			file_put_contents( $this->cache_file, json_encode( array() ) );
 		}
-		$this->cache = json_decode( file_get_contents( $this->cache_file ), true );
+		$this->delete_expired_and_load_cache();
 	}
 	public function set( string $key, $value, int $ttl ) {
 		$this->cache[ $key ] = array(
@@ -42,5 +42,15 @@ class Cache {
 			return false;
 		}
 		return $this->cache[ $key ]['value'];
+	}
+
+	private function delete_expired_and_load_cache() {
+		$this->cache = json_decode( file_get_contents( $this->cache_file ), true );
+		foreach ( $this->cache as $key => $value ) {
+			if ( $value['ttl'] < time() ) {
+				unset( $this->cache[ $key ] );
+			}
+		}
+		file_put_contents( $this->cache_file, json_encode( $this->cache ) );
 	}
 }
