@@ -48,4 +48,22 @@ class Bot {
 		}
 		return $this;
 	}
+
+	public function get_update_info( $update ) {
+		$date      = $update->getMessage()->getDate();
+		$update_id = $update->getUpdateId();
+		$info      = array(
+			'update_id' => $update_id,
+			'chat_id'   => $update->getMessage()->getChat()->getId(),
+			'date'      => $date,
+			'text'      => $update->getMessage()->getText(),
+			'from'      => $update->getMessage()->getFrom()->getId(),
+			'chat name' => $update->getMessage()->getChat()->getTitle(),
+		);
+		ob_start();
+		print_r( $info );
+		$contents = ob_get_contents();
+		ob_end_clean();
+		return '```' . PHP_EOL . $contents . PHP_EOL . '```';
+	}
 }
