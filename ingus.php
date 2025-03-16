@@ -7,6 +7,7 @@ date_default_timezone_set( 'Europe/Moscow' );
 define( 'NG_ING_PREFIX', 'NGING' );
 define( 'NG_ING_VERSION', '0.1.0' );
 define( 'NG_ING_FOLDER', __DIR__ );
+define( 'NGING_DELETE_ATTEMPTS', 5 );
 $rules = json_decode( file_get_contents( __DIR__ . '/rules.json' ), true );
 if ( ! $rules || ! is_array( $rules ) ) {
 	throw new Exception( 'Invalid rules.json' );
@@ -34,13 +35,11 @@ foreach ( $bot->data['updates'] as $update ) {
 	if ( $guard->is_spam( $update ) ) {
 		$bot->send_message( NGINS_ADMIN_CHAT, 'Spam detected: ' . $update->getMessage()->getText() );
 		$try = (int) $cache->get( NG_ING_PREFIX . '_try_' . $update_id );
-		if ( 5 < $try ) {
+		if ( NGING_DELETE_ATTEMPTS < $try ) {
 			$bot->send_message( NGINS_ADMIN_CHAT, 'Spam detected: ' . $update->getMessage()->getText() . ' but could not be deleted' );A
 			continue;
 		}
 		++$try;
-		echo '!!! ' . $try;
-		var_dump( $try );
 		$cache->set( NG_ING_PREFIX . '_try_' . $update_id, $try, 24 * 60 * 60 );
 		$bot->delete_message( $update->getMessage()->getChat()->getId(), $update->getMessage()->getMessageId() );
 	}
