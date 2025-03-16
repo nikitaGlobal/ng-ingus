@@ -8,7 +8,7 @@ define( 'NG_ING_PREFIX', 'NGING' );
 define( 'NG_ING_VERSION', '0.1.0' );
 define( 'NG_ING_FOLDER', __DIR__ );
 define( 'NGING_DELETE_ATTEMPTS', 5 );
-$rules = json_decode( file_get_contents( __DIR__ . '/rules.json' ), true );
+$rules = json_decode( file_get_contents( __DIR__ . '/rules/rules.json' ), true );
 if ( ! $rules || ! is_array( $rules ) ) {
 	throw new Exception( 'Invalid rules.json' );
 }
