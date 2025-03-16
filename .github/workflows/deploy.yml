@@ -12,7 +12,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
+    - name: Remove .git folder
+      run: rm -rf .git
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
