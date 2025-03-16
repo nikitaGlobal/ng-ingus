@@ -17,7 +17,6 @@ require_once 'config.php';
 global $bot;
 $bot = new \Ng\Ingus\Controller\Bot();
 $bot->get_updates( array() );
-$bot->filter_updates( NGINS_CHATTS );
 global $cache;
 $cache = new \Ng\Ingus\Controller\Cache( 'cache.json' );
 if ( empty( $bot->data['updates'] ) ) {
