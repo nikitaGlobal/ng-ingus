@@ -34,7 +34,7 @@ Ingus is named after the famous Russian border dog. This is a simple bot for Tel
 - Description: This constant holds the chat ID of the admin. It is used to identify the admin chat for administrative purposes.
 - Required Value: An integer representing the admin chat ID. Example: `98797678`.
 4. NGINS_COPY_ALL
-- Description: This constant is a boolean flag that indicates whether the bot should copy all messages.
+- Description: This constant is a boolean flag that indicates whether the bot should copy all messages to the administrator.
 - Required Value: A boolean value (true or false). Example: true.
 
 ### Example configuration
