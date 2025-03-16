@@ -33,5 +33,5 @@ jobs:
         command_timeout: 600
         timeout: 600 
         retries: 3
-        exclude: rules.json
+        exclude: rules/rules.json
         retry-delay: 10
