@@ -33,11 +33,13 @@ foreach ( $bot->data['updates'] as $update ) {
 
 	}
 	if ( $guard->is_spam( $update ) ) {
-		$bot->send_message( NGINS_ADMIN_CHAT, 'Spam detected: ' . $update->getMessage()->getText() );
 		$try = (int) $cache->get( NG_ING_PREFIX . '_try_' . $update_id );
 		if ( NGING_DELETE_ATTEMPTS < $try ) {
 			$bot->send_message( NGINS_ADMIN_CHAT, 'Spam detected: ' . $update->getMessage()->getText() . ' but could not be deleted' );
 			continue;
+		}
+		if ( 0 === $try ) {
+			$bot->send_message( $update->getMessage()->getChat()->getId(), 'Spam detected, message will be deleted' );
 		}
 		++$try;
 		$cache->set( NG_ING_PREFIX . '_try_' . $update_id, $try, 24 * 60 * 60 );
