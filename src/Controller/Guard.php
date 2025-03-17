@@ -19,6 +19,7 @@ class Guard {
 	 */
 	private $test_methods = array(
 		'test_regex',
+		'test_emoji',
 	);
 	use Tests;
 
@@ -27,8 +28,15 @@ class Guard {
 	}
 
 	public function is_spam( $update ) {
+		$string = $update->getMessage()->getText();
+		if ( ! is_string( $string ) ) {
+			return true;
+		}
+		if ( 0 === strlen( trim( $string ) ) ) {
+			return true;
+		}
 		foreach ( $this->test_methods as $method ) {
-			if ( $this->$method( $update->getMessage()->getText() ) ) {
+			if ( $this->$method( $string ) ) {
 				return true;
 			}
 		}

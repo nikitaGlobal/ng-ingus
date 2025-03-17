@@ -28,8 +28,8 @@ foreach ( $bot->data['updates'] as $update ) {
 	if ( $cache->get( NG_ING_PREFIX . '_update_' . $update_id ) ) {
 		continue;
 	}
-	$cache->set( NG_ING_PREFIX . '_update_' . $update_id, $update_id, 24 * 60 * 60 );
-	$date        = $update->getMessage()->getDate();
+	// $cache->set( NG_ING_PREFIX . '_update_' . $update_id, $update_id, 24 * 60 * 60 );
+	$date        = $update?->getMessage()?->getDate() ?? '';
 	$update_info = $bot->get_update_info( $update );
 	$guard       = new \Ng\Ingus\Controller\Guard( $update );
 	if ( $guard->is_spam( $update ) ) {
