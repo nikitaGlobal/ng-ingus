@@ -49,6 +49,15 @@ class Bot {
 		return $this;
 	}
 
+	public function restrict_chat_member( $chat_id, $user_id ): self {
+		try {
+			$this->bot->restrictChatMember( $chat_id, $user_id, null, null, null, null, null, null );
+		} catch ( Exception $e ) {
+			trigger_error( 'Error restricting chat member: ' . $e->getMessage() );
+		}
+		return $this;
+	}
+
 	public function get_update_info( $update ) {
 		$date      = $update->getMessage()->getDate();
 		$update_id = $update->getUpdateId();

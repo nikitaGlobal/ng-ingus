@@ -33,7 +33,8 @@ foreach ( $bot->data['updates'] as $update ) {
 	$update_info = $bot->get_update_info( $update );
 	$guard       = new \Ng\Ingus\Controller\Guard( $update );
 	if ( $guard->is_spam( $update ) ) {
-			send_message( NGINS_ADMIN_CHAT, 'Spam detected, message will be deleted' . "\n" . $update_info );
+		send_message( NGINS_ADMIN_CHAT, 'Spam detected, message will be deleted' . "\n" . $update_info );
+		$bot->restrict_chat_member( $update->getMessage()->getChat()->getId(), $update->getMessage()->getFrom()->getId() );
 		$bot->delete_message( $update->getMessage()->getChat()->getId(), (int) $update->getMessage()->getMessageId() );
 	} elseif ( defined( 'NGINS_COPY_ALL' ) && NGINS_COPY_ALL ) {
 			send_message( NGINS_ADMIN_CHAT, 'New message: ' . "\n" . $update_info );
