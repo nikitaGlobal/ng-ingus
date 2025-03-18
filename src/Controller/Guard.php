@@ -17,14 +17,17 @@ class Guard {
 	 *
 	 * @var array
 	 */
-	private $check_methods = array(
-		'check_regex',
-		'check_emoji',
-	);
+	private $check_methods = array();
 	use Check;
 
 	function __construct( $update ) {
-		$this->update = $update;
+		$this->check_methods = array_filter(
+			get_class_methods( 'Ng\Ingus\Controller\Check' ),
+			function ( $method ) {
+				return 0 === strpos( $method, 'check_' );
+			}
+		);
+		$this->update        = $update;
 	}
 
 	public function is_spam( $update ) {
