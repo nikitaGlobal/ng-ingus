@@ -15,5 +15,8 @@
     ],
     "require": {
         "telegram-bot/api": "^2.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
     }
 }

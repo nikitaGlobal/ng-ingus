@@ -62,12 +62,13 @@ class Bot {
 		$date      = $update->getMessage()->getDate();
 		$update_id = $update->getUpdateId();
 		$info      = array(
-			'update_id' => $update_id,
-			'chat_id'   => $update->getMessage()->getChat()->getId(),
-			'date'      => $date,
-			'text'      => $update->getMessage()->getText(),
-			'from'      => $update->getMessage()->getFrom()->getId(),
-			'chat name' => $update->getMessage()->getChat()->getTitle(),
+			'update_id'   => $update_id,
+			'chat_id'     => $update->getMessage()->getChat()->getId(),
+			'date'        => $date,
+			'text'        => $update->getMessage()->getText(),
+			'from'        => $update->getMessage()->getFrom()->getId(),
+			'sender_name' => $update->getMessage()->getFrom()->getFirstName() . ' ' . $update->getMessage()->getFrom()->getLastName() . ' ' . $update->getMessage()->getFrom()->getUsername(),
+			'chat name'   => $update->getMessage()->getChat()->getTitle(),
 		);
 		ob_start();
 		print_r( $info );

@@ -2,7 +2,7 @@
 declare( strict_types = 1 );
 namespace Ng\Ingus\Controller;
 
-use Ng\Ingus\Controller\Tests;
+use Ng\Ingus\Controller\Check;
 
 class Guard {
 	/**
@@ -13,15 +13,15 @@ class Guard {
 	private object $update;
 
 	/**
-	 * Test methods.
+	 * check methods.
 	 *
 	 * @var array
 	 */
-	private $test_methods = array(
-		'test_regex',
-		'test_emoji',
+	private $check_methods = array(
+		'check_regex',
+		'check_emoji',
 	);
-	use Tests;
+	use Check;
 
 	function __construct( $update ) {
 		$this->update = $update;
@@ -35,7 +35,7 @@ class Guard {
 		if ( 0 === strlen( trim( $string ) ) ) {
 			return true;
 		}
-		foreach ( $this->test_methods as $method ) {
+		foreach ( $this->check_methods as $method ) {
 			if ( $this->$method( $string ) ) {
 				return true;
 			}
