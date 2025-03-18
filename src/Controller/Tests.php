@@ -27,6 +27,10 @@ trait Tests {
 			if ( 1 === preg_match( $pattern, $text ) ) {
 				return true;
 			}
+			$string = mb_strtolower( $text );
+			if ( 1 === preg_match( $pattern, $string ) ) {
+				return true;
+			}
 		}
 	}
 }
