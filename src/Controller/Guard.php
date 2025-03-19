@@ -1,10 +1,13 @@
 <?php
-declare( strict_types = 1 );
+
+declare(strict_types=1);
+
 namespace Ng\Ingus\Controller;
 
 use Ng\Ingus\Controller\Check;
 
 class Guard {
+
 	/**
 	 * Update object.
 	 *
@@ -32,6 +35,10 @@ class Guard {
 
 	public function is_spam( $update ) {
 		$string = $update->getMessage()->getText();
+		// if has image or video, get caption.
+		if ( $update->getMessage()->getPhoto() || $update->getMessage()->getVideo() ) {
+			$string = $update->getMessage()->getCaption();
+		}
 		if ( ! is_string( $string ) ) {
 			return true;
 		}

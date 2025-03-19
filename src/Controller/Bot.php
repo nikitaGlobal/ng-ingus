@@ -70,6 +70,25 @@ class Bot {
 			'sender_name' => $update->getMessage()->getFrom()->getFirstName() . ' ' . $update->getMessage()->getFrom()->getLastName() . ' ' . $update->getMessage()->getFrom()->getUsername(),
 			'chat name'   => $update->getMessage()->getChat()->getTitle(),
 		);
+		// attach photos, videos and captions if has some.
+		if ( $update->getMessage()->getPhoto() ) {
+			$info['photo'] = $update->getMessage()->getPhoto();
+		}
+		if ( $update->getMessage()->getVideo() ) {
+			$info['video'] = $update->getMessage()->getVideo();
+		}
+		// get image or video or gallery caption.
+		if ( $update->getMessage()->getCaption() ) {
+			$info['caption'] = $update->getMessage()->getCaption();
+		}
+		// if has gallery
+		if ( $update->getMessage()->getMediaGroupId() ) {
+			$info['media_group_id'] = $update->getMessage()->getMediaGroupId();
+		}
+		// if has file attachments.
+		if ( $update->getMessage()->getDocument() ) {
+			$info['document'] = $update->getMessage()->getDocument();
+		}
 		ob_start();
 		print_r( $info );
 		$contents = ob_get_contents();
