@@ -8,11 +8,15 @@ trait Check {
 		$words           = preg_split( '/\s+|,|\.|;/', $text );
 		$cyrillicPattern = '/[а-яё]/iu';
 		$latinPattern    = '/[a-z]/i';
+		$greekPattern    = '/[α-ω]/iu';
 		foreach ( $words as $word ) {
 			if ( empty( $word ) ) {
 				continue;
 			}
 			if ( preg_match( $cyrillicPattern, $word ) && preg_match( $latinPattern, $word ) ) {
+				return true;
+			}
+			if ( preg_match( $cyrillicPattern, $word ) && preg_match( $greekPattern, $word ) ) {
 				return true;
 			}
 		}
@@ -42,14 +46,27 @@ trait Check {
 		if ( ! is_string( $text ) ) {
 			return false;
 		}
+		echo "\n";
+		echo 'text: ' . $text . PHP_EOL;
+		$result = false;
 		foreach ( NGING_REGEX_RULES as $pattern ) {
+			$pattern = '/' . $pattern . '/ium';
 			if ( 1 === preg_match( $pattern, $text ) ) {
-				return true;
-			}
-			$string = mb_strtolower( $text );
-			if ( 1 === preg_match( $pattern, $string ) ) {
-				return true;
+				echo 'pattern: ' . $pattern . ' => ';
+				echo ' true' . PHP_EOL;
+				$result = true;
+			} else {
 			}
 		}
+		echo true === $result ? ' spam ' : ' not spam ';
+		echo PHP_EOL;
+		return $result;
+	}
+	public function normalize( $string ) {
+		$string = mb_strtolower( $string );
+		$string = preg_replace( '/[^a-zа-яё0-9\+]/u', ' ', $string );
+		$string = str_replace( array( "\r", "\n" ), ' ', $string );
+		$string = preg_replace( '/\s+/u', ' ', $string );
+		return $string;
 	}
 }

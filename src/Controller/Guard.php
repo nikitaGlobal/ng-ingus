@@ -46,7 +46,7 @@ class Guard {
 			return true;
 		}
 		foreach ( $this->check_methods as $method ) {
-			if ( $this->$method( $string ) ) {
+			if ( $this->$method( $this->normalize( $string ) ) ) {
 				return true;
 			}
 		}
