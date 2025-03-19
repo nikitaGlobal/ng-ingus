@@ -23,14 +23,14 @@ class CheckTest extends TestCase {
 	}
 
 	public function test_all() {
-		$methods    = get_class_methods( 'Ng\Ingus\Controller\Check' );
-		$methods    = array_filter(
+		$methods     = get_class_methods( 'Ng\Ingus\Controller\Check' );
+		$methods     = array_filter(
 			$methods,
 			function ( $method ) {
 				return 0 === strpos( $method, 'check_' );
 			}
 		);
-		$texts_true = array(
+		$texts_false = array(
 			'Продам стульчик детский трансформер -30 лев , самовывоз из г.Обзор',
 			'Соседи, прошу прощения. Бот еще только обучается, у него бывают ложные срабатывания. 
 Если в сообщении эмодзи > 15%, это признак спамма.
@@ -47,9 +47,23 @@ class CheckTest extends TestCase {
 Ну и epay.bg тоже умеет уведомлять на почту.',
 			'',
 		);
+		$texts_true  = array(
+			'В поисках охраны-от 8000 руб. в день.
+Также нужен водитель с личным/арендным авто и без. 
+ Оплата от 25 500 руб. за один рейс!  Расходы в дороге компенсируем.',
+		);
+		foreach ( $texts_true as $text ) {
+			$results = array();
+			foreach ( $methods as $method ) {
+				$results[ $method ] = $this->$method( $text );
+			}
+			print_r( $results );
+			$this->assertTrue( in_array( true, $results ), 'should be spam. Tried ' . $text );
+		}
 		foreach ( $methods as $method ) {
-			foreach ( $texts_true as $text ) {
-				$this->assertFalse( $this->$method( $text ), 'tried ' . $text );
+			foreach ( $texts_false as $text ) {
+				$this->assertFalse( $this->$method( $text ), 'Should be fine. Tried ' . $text );
+
 			}
 		}
 	}

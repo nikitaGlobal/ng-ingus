@@ -51,6 +51,7 @@ trait Check {
 		}
 		echo "\n";
 		echo 'text: ' . $text . PHP_EOL;
+		echo 'normalized: ' . $this->normalize( $text ) . PHP_EOL;
 		$result = false;
 		foreach ( NGING_REGEX_RULES as $pattern ) {
 			$pattern = '/' . $pattern . '/ium';
