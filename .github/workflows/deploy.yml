@@ -33,5 +33,5 @@ jobs:
         command_timeout: 600
         timeout: 600 
         retries: 3
-        exclude: rules/rules.json
+        exclude: rules/rules.json, tests, .github, .git, .gitignore, .gitattributes
         retry-delay: 10
