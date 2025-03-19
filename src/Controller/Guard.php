@@ -40,10 +40,10 @@ class Guard {
 			$string = $update->getMessage()->getCaption();
 		}
 		if ( ! is_string( $string ) ) {
-			return true;
+			return false;
 		}
 		if ( 0 === strlen( trim( $string ) ) ) {
-			return true;
+			return false;
 		}
 		foreach ( $this->check_methods as $method ) {
 			if ( $this->$method( $this->normalize( $string ) ) ) {

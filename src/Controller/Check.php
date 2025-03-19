@@ -36,6 +36,9 @@ trait Check {
 			return true;
 		}
 		$length = mb_strlen( $text );
+		if ( 0 === $length ) {
+			return false;
+		}
 		// if emojis are 15% or more of the text return true.
 		if ( 0.15 <= count( $matches[0] ) / $length ) {
 			return true;
