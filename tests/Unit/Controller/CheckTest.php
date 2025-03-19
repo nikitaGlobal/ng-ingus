@@ -101,7 +101,7 @@ class CheckTest extends TestCase {
 ✔️ бeз σпытα 
 
 
-∏иши, вᴄё рαᴄскажeм ➡️@kostin1013',
+∏иши, вᴄё рαᴄскажeм ➡️@spam',
 		);
 		foreach ( $texts_true as $text ) {
 			$this->assertTrue( $this->check_mixed_letters( $text ), 'tried ' . $text );
