@@ -68,7 +68,7 @@ class Bot {
 			'date'        => date( 'Y-m-d H:m:s', $date ),
 			'text'        => $update->getMessage()->getText(),
 			'from'        => $update->getMessage()->getFrom()->getId(),
-			'sender_name' => $update->getMessage()->getFrom()->getFirstName() . ' ' . $update->getMessage()->getFrom()->getLastName() . ' ' . $update->getMessage()->getFrom()->getUsername(),
+			'sender_name' => $update->getMessage()->getFrom()->getFirstName() . ' ' . $update->getMessage()->getFrom()->getLastName() . ' @' . $update->getMessage()->getFrom()->getUsername(),
 			'chat name'   => $update->getMessage()->getChat()->getTitle(),
 		);
 		// attach photos, videos and captions if has some.
