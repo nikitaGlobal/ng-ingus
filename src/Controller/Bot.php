@@ -63,6 +63,7 @@ class Bot {
 		$update_id = $update->getUpdateId();
 		$info      = array(
 			'update_id'   => $update_id,
+			'bot_version' => NG_ING_VERSION,
 			'chat_id'     => $update->getMessage()->getChat()->getId(),
 			'date'        => date( 'Y-m-d H:m:s', $date ),
 			'text'        => $update->getMessage()->getText(),
