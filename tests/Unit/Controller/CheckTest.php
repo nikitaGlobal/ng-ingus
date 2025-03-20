@@ -113,7 +113,6 @@ class CheckTest extends TestCase {
 
 	public function test_regex_true() {
 		$texts = array(
-
 			'Нужны люди для удаленной работы
 Сфера не сложная, но прибыльная
 Доход каждый день от 120-180$ белый вид заработка 
@@ -123,6 +122,7 @@ class CheckTest extends TestCase {
 Пишите "+" в лс',
 			'Удаленка',
 			'Пишите + в лс',
+			'Привет! Требуются 2 человека для работы на дому с телефоном/компьютером. 2 часа в день, заработок от $150 в день, перспектива до $3000 в месяц. Напиши, все подробности в ЛС!'
 		);
 		foreach ( $texts as $text ) {
 			$error = 'got: ' . $text . "\n normalized: " . $this->normalize( $text ) . "\n";

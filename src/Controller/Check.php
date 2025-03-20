@@ -68,7 +68,7 @@ trait Check {
 	}
 	public function normalize( $string ) {
 		$string = mb_strtolower( $string );
-		$string = preg_replace( '/[^a-zа-яё0-9\+]/u', ' ', $string );
+		$string = preg_replace( '/[^a-zа-яё0-9\+\$]/u', ' ', $string );
 		$string = str_replace( array( "\r", "\n" ), ' ', $string );
 		$string = preg_replace( '/\s+/u', ' ', $string );
 		return $string;
