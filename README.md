@@ -4,7 +4,8 @@ Ingus is named after the famous Russian border dog. This is a simple bot for Tel
 
 ## Features
 
-- Detects and removes spam messages
+- Detects and removes spam messages silently
+- checks users at [cas.chat](https://cas.chat/)
 - Easy to configure and use
 - Lightweight and efficient
 
