@@ -12,8 +12,9 @@ global $bot;
 $bot = new \Ng\Ingus\Controller\Bot();
 $bot->get_updates( array() );
 global $cache;
-$cache = new \Ng\Ingus\Controller\Cache( 'cache.json' );
-$rules = json_decode( file_get_contents( __DIR__ . '/rules/rules.json' ), true );
+$cache    = new \Ng\Ingus\Controller\Cache( 'cache.json' );
+$rules    = json_decode( file_get_contents( __DIR__ . '/rules/rules.json' ), true );
+$cas_chat = new \Ng\Ingus\Controller\Cas_Chat( $cache );
 if ( ! $rules || ! is_array( $rules ) ) {
 	send_message( NGINS_ADMIN_CHAT, 'Invalid rules.json' );
 	throw new Exception( 'Invalid rules.json' );
@@ -22,21 +23,33 @@ define( 'NGING_REGEX_RULES', $rules );
 if ( empty( $bot->data['updates'] ) ) {
 	exit;
 }
+
 shuffle( $bot->data['updates'] );
 foreach ( $bot->data['updates'] as $update ) {
 	$update_id = $update->getUpdateId();
+	echo 'checking ' . $update_id . PHP_EOL;
 	if ( $cache->get( NG_ING_PREFIX . '_update_' . $update_id ) ) {
 		continue;
 	}
-	$date        = $update?->getMessage()?->getDate() ?? '';
 	$update_info = $bot->get_update_info( $update );
 	$guard       = new \Ng\Ingus\Controller\Guard( $update );
+	if ( $cas_chat->check_user( $update->getMessage()->getFrom()->getId() ) ) {
+		send_message( NGINS_ADMIN_CHAT, 'User is banned in cas.chat' . "\n" . $update_info );
+		$cache->set( NG_ING_PREFIX . '_update_' . $update_id, $update_id, 24 * 60 * 60 );
+		restrict_user( $update );
+	}
 	if ( $guard->is_spam( $update ) ) {
 		send_message( NGINS_ADMIN_CHAT, 'Spam detected, message will be deleted' . "\n" . $update_info );
 		$cache->set( NG_ING_PREFIX . '_update_' . $update_id, $update_id, 24 * 60 * 60 );
-		$bot->restrict_chat_member( $update->getMessage()->getChat()->getId(), $update->getMessage()->getFrom()->getId() );
-		$bot->delete_message( $update->getMessage()->getChat()->getId(), (int) $update->getMessage()->getMessageId() );
-	} elseif ( defined( 'NGINS_COPY_ALL' ) && NGINS_COPY_ALL ) {
+		restrict_user( $update );
+		continue;
+	}
+	if ( $cas_chat->check_user( $update->getMessage()->getFrom()->getId() ) ) {
+		send_message( NGINS_ADMIN_CHAT, 'User is banned in cas.chat' . "\n" . $update_info );
+		$cache->set( NG_ING_PREFIX . '_update_' . $update_id, $update_id, 24 * 60 * 60 );
+		restrict_user( $update );
+	}
+	if ( defined( 'NGINS_COPY_ALL' ) && NGINS_COPY_ALL ) {
 		$cache->set( NG_ING_PREFIX . '_update_' . $update_id, $update_id, 24 * 60 * 60 );
 		send_message( NGINS_ADMIN_CHAT, 'New message: ' . "\n" . $update_info );
 	}
@@ -51,4 +64,10 @@ function send_message( $chat_id, $text ) {
 	$cache->set( $action, 1, 300 );
 	global $bot;
 	$bot->send_message( $chat_id, $text );
+}
+function restrict_user( $update ) {
+	return;
+	global $bot;
+	$bot->restrict_chat_member( $update->getMessage()->getChat()->getId(), $update->getMessage()->getFrom()->getId() );
+	$bot->delete_message( $update->getMessage()->getChat()->getId(), (int) $update->getMessage()->getMessageId() );
 }

@@ -59,6 +59,9 @@ class Bot {
 	}
 
 	public function get_update_info( $update ) {
+		if ( ! $update->getMessage() ) {
+			return false;
+		}
 		$date      = $update->getMessage()->getDate();
 		$update_id = $update->getUpdateId();
 		$info      = array(
