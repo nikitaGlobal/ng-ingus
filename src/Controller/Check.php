@@ -51,15 +51,17 @@ trait Check {
 		}
 		echo "\n";
 		echo 'text: ' . $text . PHP_EOL;
-		echo 'normalized: ' . $this->normalize( $text ) . PHP_EOL;
 		$result = false;
 		foreach ( NGING_REGEX_RULES as $pattern ) {
 			$pattern = '/' . $pattern . '/ium';
 			if ( 1 === preg_match( $pattern, $text ) ) {
+				echo 'normalized: ' . $this->normalize( $text ) . ' ';
 				echo 'pattern: ' . $pattern . ' => ';
 				echo ' true' . PHP_EOL;
 				$result = true;
 			} else {
+				echo 'normalized: ' . $this->normalize( $text ) . ' ';
+				echo 'pattern: ' . $pattern . ' => false' . PHP_EOL;
 			}
 		}
 		echo true === $result ? ' spam ' : ' not spam ';
