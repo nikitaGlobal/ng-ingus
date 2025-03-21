@@ -29,40 +29,34 @@ if ( empty( $bot->data['updates'] ) ) {
 	exit;
 }
 
-// shuffle( $bot->data['updates'] );
+shuffle( $bot->data['updates'] );
 foreach ( $bot->data['updates'] as $update ) {
 	// if user joined group
 	$update_id = $update->getUpdateId();
 	if ( $cache->get( NG_ING_PREFIX . '_update_' . $update_id ) ) {
 		continue;
 	}
-	if ( $update->getMessage()->getNewChatMembers() && $cas_chat->check_user( $update->getMessage()->getFrom()->getId() ) ) {
-		send_message( NGINS_ADMIN_CHAT, 'User is banned in cas.chat, muted' . "\n" . $update_info );
-		$cache->set( NG_ING_PREFIX . '_update_' . $update_id, $update_id, 24 * 60 * 60 );
-		restrict_user( $update );
-		continue;
-	}
-	if ( $update->getMessage()->getLeftChatMember() ) {
-		continue;
-	}
 	echo 'checking ' . $update_id . PHP_EOL;
 	$update_info = $bot->get_update_info( $update );
 	$guard       = new \Ng\Ingus\Controller\Guard( $update );
+	$cache->set( NG_ING_PREFIX . '_update_' . $update_id, $update_id, 24 * 60 * 60 );
 	if ( $cas_chat->check_user( $update->getMessage()->getFrom()->getId() ) ) {
 		send_message( NGINS_ADMIN_CHAT, 'User is banned in cas.chat' . "\n" . $update_info );
-		$cache->set( NG_ING_PREFIX . '_update_' . $update_id, $update_id, 24 * 60 * 60 );
 		restrict_user( $update );
 	}
 	if ( $guard->is_spam( $update ) ) {
 		send_message( NGINS_ADMIN_CHAT, 'Spam detected, message will be deleted' . "\n" . $update_info );
-		$cache->set( NG_ING_PREFIX . '_update_' . $update_id, $update_id, 24 * 60 * 60 );
 		restrict_user( $update );
 		continue;
 	}
 	if ( $cas_chat->check_user( $update->getMessage()->getFrom()->getId() ) ) {
 		send_message( NGINS_ADMIN_CHAT, 'User is banned in cas.chat' . "\n" . $update_info );
-		$cache->set( NG_ING_PREFIX . '_update_' . $update_id, $update_id, 24 * 60 * 60 );
 		restrict_user( $update );
+	}
+	if ( $update->getMessage()->getNewChatMembers() && $cas_chat->check_user( $update->getMessage()->getFrom()->getId() ) ) {
+		send_message( NGINS_ADMIN_CHAT, 'User is banned in cas.chat, muted' . "\n" . $update_info );
+		restrict_user( $update );
+		continue;
 	}
 	if ( defined( 'NGINS_COPY_ALL' ) && NGINS_COPY_ALL ) {
 		$cache->set( NG_ING_PREFIX . '_update_' . $update_id, $update_id, 24 * 60 * 60 );
